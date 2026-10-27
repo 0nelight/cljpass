@@ -1,0 +1,121 @@
+{:cli/already-connected "Dieses Gerät ist bereits mit einem Server verbunden."
+ :cli/approval-requested "Freischaltung angefragt. Fingerprint (dem Admin nennen): {fingerprint}"
+ :cli/approved "Freigeschaltet: {user}"
+ :cli/connect-again "Danach 'cljpass connect' erneut aufrufen oder die Oberfläche öffnen."
+ :cli/connected "Mit dem Server verbunden. Übernommen: {created} neu, {updated} geändert, {copied} als Kopie (Konflikt), {deleted} gelöscht."
+ :cli/disabled "Deaktiviert: {user} - geteilte Passwörter sollten geändert werden."
+ :cli/disconnected.one "{n} Eintrag nach {file} geschrieben. Ab jetzt lokaler Betrieb ohne Server."
+ :cli/disconnected.other "{n} Einträge nach {file} geschrieben. Ab jetzt lokaler Betrieb ohne Server."
+ :cli/error "Fehler: {message}"
+ :cli/exported.one "{n} Eintrag exportiert nach {file}"
+ :cli/exported.other "{n} Einträge exportiert nach {file}"
+ :cli/exported-unencrypted.one "{n} Eintrag exportiert nach {file} (unverschlüsselt!)"
+ :cli/exported-unencrypted.other "{n} Einträge exportiert nach {file} (unverschlüsselt!)"
+ :cli/file-not-found "Datei nicht gefunden: {file}"
+ :cli/fingerprint-missing "--fingerprint fehlt (vom User vorlesen lassen)"
+ :cli/fingerprint-tell-admin "Fingerprint (dem Admin nennen): {fingerprint}"
+ :cli/group-name-missing "Gruppenname fehlt"
+ :cli/group-set "Gruppe {group}: {members}"
+ :cli/identity-exists "Auf diesem Gerät existiert bereits eine Identität ({file})"
+ :cli/identity-imported "Identität übernommen für {user}"
+ :cli/imported.one "{n} Eintrag importiert"
+ :cli/imported.other "{n} Einträge importiert"
+ :cli/kdbx-imported.one "{n} Eintrag importiert (Datenbank {database})"
+ :cli/kdbx-imported.other "{n} Einträge importiert (Datenbank {database})"
+ :cli/local-mode "Lokaler Betrieb mit {file}"
+ :cli/missing "{what} fehlt"
+ :cli/new-device-or-key "(neues Gerät/Schlüssel!)"
+ :cli/no-requests "Keine offenen Anfragen."
+ :cli/org-hash-distribute "Org-Hash (per GPO an alle Clients verteilen):"
+ :cli/password-or-keyfile-required "Passwort oder --keyfile nötig"
+ :cli/passwords-mismatch "Passwörter stimmen nicht überein"
+ :cli/prompt-file-password "Passwort von {file}: "
+ :cli/prompt-keepass-password "KeePass-Passwort (leer = keins): "
+ :cli/prompt-master-password "Master-Passwort: "
+ :cli/prompt-master-password-new-file "Master-Passwort für die neue Datei: "
+ :cli/prompt-new-keepass-password "Neues Passwort für die KeePass-Datei: "
+ :cli/prompt-new-master-password "Neues Master-Passwort: "
+ :cli/prompt-one-time-code "Einmalcode: "
+ :cli/prompt-repeat "Wiederholen: "
+ :cli/recovery-keep-offline "-> OFFLINE verwahren (Tresor/Papier) und die Datei hier löschen!"
+ :cli/recovery-written "Recovery-Schlüssel geschrieben nach {file}"
+ :cli/request-sent "Anfrage gesendet für {user}"
+ :cli/server-and-org-hash-required "--server und --org-hash angeben"
+ :cli/server-connection-failed "Server-Verbindung: {state} {error}"
+ :cli/server-connection-label "Server-Verbindung:"
+ :cli/server-listening "cljpass-Server auf {address}"
+ :cli/server-setup-allowed "(Einrichtung erlaubt)"
+ :cli/synced "Synchronisiert: {added} neu, {updated} aktualisiert, {deleted} gelöscht - beide Dateien sind gleich."
+ :cli/transfer-code "Einmalcode (getrennt übermitteln!): {code}"
+ :cli/transfer-file "Übertragungsdatei: {file}"
+ :cli/unknown-format "Unbekanntes Format - erlaubt: {formats}"
+ :cli/usage "cljpass - Team-Passwortspeicher mit Rechten pro Eintrag
+
+Benutzer:
+  cljpass                                  Oberfläche starten
+  cljpass gui [--idle SECONDS]
+  cljpass enroll --server URL --org-hash H [--user NAME] [--kerberos]
+  cljpass open FILE [--new] [--keyfile K]  lokaler Betrieb mit einer KeePass-Datei (ohne Server)
+  cljpass connect [--server URL --org-hash H] lokale Datei -> Server (nach Freischaltung erneut aufrufen)
+  cljpass disconnect FILE [--keyfile K] [--force]  Server -> lokale Datei
+  cljpass status | sync | list | fingerprint
+  cljpass export-device --out FILE         Identität für neues Gerät (mit Einmalcode)
+  cljpass import-device FILE [--server URL --org-hash H]
+  cljpass kdbx-import FILE [--keyfile K]   KeePass-Datenbank übernehmen (verlustfrei)
+  cljpass kdbx-export FILE [--keyfile K]   alle lesbaren Einträge als KeePass-Datei
+  cljpass kdbx-sync FILE [--keyfile K]     lokal: mit anderer KeePass-Datei synchronisieren (wie KeePass)
+  cljpass rotate [ID|TITEL ...] [--probe] [--no-probe] [--code 123456]
+                                           Passwort am Ziel wechseln, dann im Tresor (ohne Namen: was hier geht)
+  cljpass agent ...                        Zugriff für eine LLM-Session ohne Passwörter (cljpass agent help)
+  cljpass import FILE [--format kdbx|xml|csv] [--keyfile K]
+                                             KeePass-XML, CSV (KeePassXC, Bitwarden, Browser) oder KDBX
+  cljpass export FILE --format xml|csv|html|xsl [--xsl TEMPLATE] [--passwords]
+                                             unverschlüsselt: KeePass-XML, CSV, HTML, XSL-Vorlage
+
+Server:
+  cljpass server --db FILE [--port 8080] [--bind 0.0.0.0] [--init-token T]
+                   [--keytab FILE --realm REALM [--principal HTTP/host@REALM] [--require-kerberos]]
+                   [--trust-proxy]           Client-Adresse aus X-Forwarded-For (hinter Caddy usw.)
+
+Administration (mit Admin-Identität):
+  cljpass init --server URL --org NAME --init-token T [--user NAME] --recovery-out FILE
+  cljpass requests                         offene Freischaltungen
+  cljpass approve USER --fingerprint FP [--display-name NAME]
+  cljpass disable USER
+  cljpass group NAME [MEMBER ...]          Mitglieder setzen (leer = alle entfernen)
+  cljpass ad-sync [--source adsi|FILE.json] [--prefix pw-]
+  cljpass auto-approve [--watch SEKUNDEN] [--ad-sync [--source ..] [--prefix ..]]
+                                             per Kerberos bestätigte Anfragen freischalten (mit --watch als Dienst)
+  cljpass audit [--since SEQ] [--json]     Audit-Log des Servers, prüft die Hash-Kette
+  cljpass recover USER --recovery-key FILE --out FILE
+"
+ :cli/vault-created "Tresor angelegt. Admin: {user}"
+ :cli/server-kerberos-on "Kerberos-Anmeldung für Realm {realm}."
+ :cli/request-kerberos-confirmed "Mit Ihrer Windows-Anmeldung bestätigt - die Freischaltung folgt automatisch."
+ :cli/kerberos-confirmed "Kerberos: {principal}"
+ :cli/auto-approve-skipped-disabled "Nicht automatisch freigeschaltet (User ist gesperrt): {user}"
+ :cli/auto-approve-skipped-key "Nicht automatisch freigeschaltet (Kerberos-Bestätigung gilt für einen anderen Schlüssel): {user}"
+ :cli/ad-sync-changed "AD-Abgleich: Roster aktualisiert"
+ :cli/audit-chain-broken "Audit-Log: Hash-Kette bei Eintrag {seq} unterbrochen"
+ :cli/agent-usage "cljpass agent - Zugriff für eine LLM-Session (läuft gegen die entsperrte Oberfläche)
+
+  cljpass agent status
+  cljpass agent find [WÖRTER] [--history]        Einträge ohne Geheimnisse (--history: auch alte Versionen)
+  cljpass agent show ID|TITEL                    Eintrag ohne Passwort und geschützte Felder
+  cljpass agent history ID|TITEL                 Versionen; gleiche Passwörter = gleiche password-group
+  cljpass agent set ID|TITEL [--title T] [--username U] [--url URL] [--notes N] [--folder F]
+                     [--tags A;B] [--add-tags A] [--field NAME=WERT ...] [--remove-field NAME ...]
+  cljpass agent new --title T [...wie set] [--generate]
+  cljpass agent generate ID|TITEL [--length N]   neues Passwort, Claude sieht es nicht
+  cljpass agent delete ID|TITEL                  in den Papierkorb
+  cljpass agent group [ELTERN] NAME
+  cljpass agent rotation                         welche Rotationen es hier gibt (Plugins beschreiben sich selbst)
+  cljpass agent rotate ID|TITEL [--code 123456] [--probe]
+                                                 Passwort AM ZIEL wechseln (Mensch gibt frei; Code, wo
+                                                 der Eintrag ein TOTP hat). Claude sieht es nicht.
+  cljpass agent ssh ID|TITEL [--minutes 30]      SSH-Kanal (Mensch gibt frei), dann: ssh -S SOCKET x BEFEHL
+  cljpass agent channels | ssh-close NAME
+  cljpass agent secret old|new                   nur FÜR einen laufenden Wechsler (Einmal-Token)
+
+Schreiben nur mit „Extras > Claude darf schreiben“. Jede Änderung bekommt den Tag „claude“." :cli/rotate-none "Kein Eintrag nennt einen bekannten Wechsler (Feld „{field}“)."
+ :cli/rotate-plugins "Rotations-Plugins ({file}, Verzeichnisse: {dirs}):"}

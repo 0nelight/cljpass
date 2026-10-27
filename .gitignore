@@ -1,0 +1,6 @@
+target/
+.cpcache/
+*.tmp-*
+.claude/
+.clj-kondo/
+.lsp/

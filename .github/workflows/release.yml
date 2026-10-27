@@ -1,0 +1,73 @@
+name: release
+
+# Windows release: for a tag v* (e.g. v0.1.0), cljpass.exe (GUI) together
+# with cljpass.com (console) is built fully optimized, briefly tested and
+# published as a GitHub release.
+# Alternatively by hand (Actions -> release -> Run workflow) with a version
+# number; the workflow then creates the tag itself.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version, e.g. v0.1.0'
+        required: true
+
+env:
+  VERSION: ${{ inputs.version || github.ref_name }}
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: graalvm-community
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: DeLaGuardo/setup-clojure@13.7.0
+        with:
+          cli: latest
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+          key: deps-${{ runner.os }}-${{ hashFiles('deps.edn') }}
+          restore-keys: deps-${{ runner.os }}-
+      - name: native-image
+        run: clojure -T:build native
+      - name: Smoke test
+        shell: bash
+        run: |
+          # cljpass.com is the console variant (copied as .exe for bash)
+          cp target/cljpass.com "$RUNNER_TEMP/acl-cli.exe"
+          "$RUNNER_TEMP/acl-cli.exe" help | head -3
+          "$RUNNER_TEMP/acl-cli.exe" gui --smoke 800
+          "$RUNNER_TEMP/acl-cli.exe" server --db "$RUNNER_TEMP/srv.db" --port 18080 --bind 127.0.0.1 --init-token T &
+          sleep 2
+          export CLJPASS_HOME="$RUNNER_TEMP/home"
+          timeout 30 "$RUNNER_TEMP/acl-cli.exe" init --server http://127.0.0.1:18080 --org Test --init-token T --user ci --recovery-out "$RUNNER_TEMP/rec.json"
+          timeout 30 "$RUNNER_TEMP/acl-cli.exe" status
+      - name: Package
+        shell: bash
+        run: |
+          mkdir -p dist/cljpass
+          cp target/cljpass.exe target/cljpass.com windows/org.edn.example README.md LICENSE NOTICE dist/cljpass/
+          cd dist
+          7z a "cljpass-${VERSION}-windows-x64.zip" cljpass >/dev/null
+          sha256sum *.zip > SHA256SUMS.txt
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          name: cljpass ${{ env.VERSION }} (Windows)
+          generate_release_notes: true
+          files: |
+            dist/*.zip
+            dist/SHA256SUMS.txt

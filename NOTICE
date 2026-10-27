@@ -1,0 +1,41 @@
+cljpass
+Copyright (C) 2026 the cljpass authors
+
+This program is free software: you can redistribute it and/or modify it
+under the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option)
+any later version (SPDX: AGPL-3.0-or-later). See the file LICENSE.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+Additional permission under GNU AGPL version 3 section 7
+
+If you modify this Program, or any covered work, by linking or combining it
+with Clojure, the Clojure contrib libraries (data.json, data.xml) or the
+Eclipse Standard Widget Toolkit (SWT) (or modified versions of those
+libraries), containing parts covered by the terms of the Eclipse Public
+License 1.0 or 2.0, the licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for the
+parts of those libraries used as well as that of the covered work.
+
+Third-party components (bundled in the binaries)
+
+- Clojure, data.json, data.xml     Eclipse Public License 1.0
+- Eclipse SWT                      Eclipse Public License 2.0
+- Bouncy Castle                    Bouncy Castle License (MIT)
+- sqlite-jdbc (incl. SQLite)       Apache License 2.0 / public domain
+- GraalVM native-image runtime     GPL-2.0 with Classpath Exception
+
+The user interface follows the layout of KeePass Password Safe 2.x
+(GPL-2.0-or-later, https://keepass.info). cljpass contains no KeePass code
+and no KeePass artwork; all icons are its own drawings. "KeePass" is a name
+of its respective owner and is used only to describe compatibility.
+
+AutoOpen (src/cljpass/autoopen.clj) follows the behavior of the KeePass
+plugin KeeAutoExec by Dominik Reichl (GPL-2.0-or-later,
+https://keepass.info/plugins.html#keeautoexec) and of KeePassXC, so that the
+same AutoOpen group works in all of them. It is a reimplementation in
+Clojure; no C# code was copied.

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cljpass</title>
+<link rel="stylesheet" href="/app.css">
+<script src="/app.js" defer></script>
+</head>
+<body>
+<div id="app" hidden>
+  <nav class="menubar" id="menubar" role="menubar"></nav>
+  <div class="toolbar" id="toolbar" role="toolbar"></div>
+  <div class="appbanner" id="banner" hidden></div>
+  <div class="main">
+    <aside class="tree" id="tree" tabindex="0"></aside>
+    <div class="splitter" id="splitter"></div>
+    <section class="right">
+      <div class="listwrap" id="listwrap" tabindex="0">
+        <table class="list" id="list">
+          <thead><tr id="listhead"></tr></thead>
+          <tbody id="listbody"></tbody>
+        </table>
+        <div class="empty" id="empty" hidden></div>
+      </div>
+      <div class="details" id="details"></div>
+    </section>
+  </div>
+  <footer class="statusbar">
+    <span id="st-count"></span>
+    <span id="st-sync"></span>
+    <span id="st-clip"></span>
+    <span class="grow"></span>
+    <span id="st-user"></span>
+  </footer>
+</div>
+<div id="screen" class="screen" hidden></div>
+<div id="ctxmenu" class="menu" role="menu" hidden></div>
+<div id="dialogs"></div>
+<div id="toast" class="toast" hidden></div>
+</body>
+</html>

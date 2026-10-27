@@ -1,0 +1,28 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.12.6"}
+        org.clojure/data.json {:mvn/version "2.5.2"}
+        org.clojure/data.xml {:mvn/version "0.2.0-alpha11"}
+        org.bouncycastle/bcprov-jdk18on {:mvn/version "1.86"}
+        org.xerial/sqlite-jdbc {:mvn/version "3.53.4.0"}
+        ;; XSL templates (export like KeePass): interpreted, also works in native-image
+        net.sf.saxon/Saxon-HE {:mvn/version "12.9"}}
+ :aliases
+ {;; SWT per platform (desktop UI). build.clj picks automatically;
+  ;; to run: clojure -M:swt-linux:run  (or :swt-win / :swt-mac)
+  :swt-linux {:extra-deps {org.eclipse.platform/org.eclipse.swt.gtk.linux.x86_64 {:mvn/version "3.135.0"}}}
+  :swt-win {:extra-deps {org.eclipse.platform/org.eclipse.swt.win32.win32.x86_64 {:mvn/version "3.135.0"}}}
+  :swt-mac {:extra-deps {org.eclipse.platform/org.eclipse.swt.cocoa.macosx.aarch64 {:mvn/version "3.135.0"}}}
+  :swt-mac-x64 {:extra-deps {org.eclipse.platform/org.eclipse.swt.cocoa.macosx.x86_64 {:mvn/version "3.135.0"}}}
+;; clojure -M:test [ns ...]
+  :test {:extra-paths ["test"]
+         ;; test KDC for the Kerberos tests (not in the build)
+         :extra-deps {org.apache.kerby/kerb-simplekdc {:mvn/version "2.0.3"}
+                      org.slf4j/slf4j-nop {:mvn/version "1.7.36"}}
+         :main-opts ["-m" "cljpass.test-runner"]}
+  ;; clojure -M:swt-linux:run [command ...]  (like cljpass.exe; SWT alias per platform)
+  :run {:main-opts ["-m" "cljpass.main"]}
+  ;; web UI (basis for a Firefox add-on, not in the client)
+  :web {:main-opts ["-m" "cljpass.web"]}
+  ;; clojure -T:build uber | native
+  :build {:deps {io.github.clojure/tools.build {:git/tag "v0.10.14" :git/sha "1176afd"}}
+          :ns-default build}}}

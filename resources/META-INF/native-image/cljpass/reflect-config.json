@@ -1,0 +1,8 @@
+[
+{"name":"net.sf.saxon.Configuration","methods":[{"name":"<init>","parameterTypes":[]}]},
+{"name":"org.xmlresolver.loaders.XmlLoader","methods":[{"name":"<init>","parameterTypes":["org.xmlresolver.ResolverConfiguration"]}]},
+{"name":"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl","methods":[{"name":"<init>","parameterTypes":[]}]},
+{"name":"com.sun.security.auth.module.Krb5LoginModule","methods":[{"name":"<init>","parameterTypes":[]}]},
+{"name":"sun.security.jgss.krb5.Krb5MechFactory","methods":[{"name":"<init>","parameterTypes":["sun.security.jgss.GSSCaller"]}]},
+{"name":"sun.security.jgss.spnego.SpNegoMechFactory","methods":[{"name":"<init>","parameterTypes":["sun.security.jgss.GSSCaller"]}]}
+]

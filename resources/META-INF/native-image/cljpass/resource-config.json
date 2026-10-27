@@ -1,0 +1,5 @@
+{"resources":{"includes":[
+ {"pattern":"\\QMETA-INF/services/javax.xml.parsers.SAXParserFactory\\E"},
+ {"pattern":"\\Qorg/xmlresolver/catalog.xml\\E"},
+ {"pattern":"\\Qxmlresolver.properties\\E"}
+]},"bundles":[]}

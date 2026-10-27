@@ -1,0 +1,36 @@
+# Example: cljpass server behind Caddy (automatic TLS with an internal CA
+# or your own certificate). Run in the project folder:
+#   docker compose -f server/docker-compose.yml up -d --build
+services:
+  cljpass:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    restart: unless-stopped
+    environment:
+      # Set only for "cljpass init", remove it again afterwards:
+      # CLJPASS_INIT_TOKEN: "long-random-string"
+      TZ: Europe/Vienna
+      # behind Caddy: client address for the audit log from X-Forwarded-For
+      CLJPASS_TRUST_PROXY: "1"
+      # Optional single sign-on (Kerberos) for enrollment, see README:
+      # CLJPASS_KEYTAB: /etc/cljpass/http.keytab
+      # CLJPASS_REALM: EXAMPLE.LOCAL
+      # CLJPASS_PRINCIPAL: HTTP/pw.example.local@EXAMPLE.LOCAL
+      # CLJPASS_REQUIRE_KERBEROS: "1"
+    volumes:
+      - cljpass-data:/var/lib/cljpass
+      # - ./http.keytab:/etc/cljpass/http.keytab:ro
+
+  caddy:
+    image: docker.io/library/caddy:2
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    command: caddy reverse-proxy --from pw.example.local --to cljpass:8080 --internal-certs
+    volumes:
+      - caddy-data:/data
+
+volumes:
+  cljpass-data:
+  caddy-data:

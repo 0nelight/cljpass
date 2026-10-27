@@ -1,0 +1,15 @@
+;; Distribute via GPO to %ProgramData%\cljpass\org.edn.
+;; The org hash is printed by "cljpass init". It is the trust anchor:
+;; clients only accept a vault with exactly this hash.
+{:server "https://pw.example.local"
+ :org-hash "PUT-THE-ORG-HASH-HERE"}
+;; Optional: forbid local mode without a server (KeePass file)
+;; {:server "..." :org-hash "..." :standalone false}
+;; Optional: single sign-on with the Windows logon (Kerberos). The client then
+;; sets itself up on first start without any input, and "cljpass
+;; auto-approve --watch 30" approves the user automatically. The server
+;; needs --keytab/--realm (see README). Users can still switch it off in the
+;; setup dialog.
+;; {:server "..." :org-hash "..." :kerberos true}
+;; With {:kerberos true :auto-enroll false} only the checkbox in the setup
+;; dialog is preset, nothing happens automatically.

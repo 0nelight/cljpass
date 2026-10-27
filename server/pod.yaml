@@ -1,0 +1,94 @@
+# cljpass server as a pod - for Kubernetes (kubectl apply -f) and for
+# Podman (podman kube play). See README, section "Server as a pod".
+#
+# Important: the server stores its data in SQLite. Therefore exactly ONE
+# replica and strategy "Recreate" - never two pods on the same volume.
+#
+# Build the image beforehand and push it to a registry (Kubernetes), or
+# build it locally (Podman):
+#   podman build -t localhost/cljpass-server:latest -f server/Dockerfile .
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cljpass-data
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cljpass-init
+type: Opaque
+stringData:
+  # Only for "cljpass init". Afterwards empty it (or delete the Secret) and
+  # restart the pod - without a token the server accepts no initial setup.
+  CLJPASS_INIT_TOKEN: "long-random-string"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cljpass
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: {app: cljpass}
+  template:
+    metadata:
+      labels: {app: cljpass}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+      containers:
+        - name: cljpass
+          image: localhost/cljpass-server:latest   # or registry.example.local/cljpass-server:TAG
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: TZ
+              value: Europe/Vienna
+            - name: CLJPASS_INIT_TOKEN
+              valueFrom:
+                secretKeyRef: {name: cljpass-init, key: CLJPASS_INIT_TOKEN, optional: true}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/cljpass
+          readinessProbe:
+            httpGet: {path: /v1/health, port: 8080}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /v1/health, port: 8080}
+            initialDelaySeconds: 20
+            periodSeconds: 30
+          resources:
+            requests: {cpu: 50m, memory: 256Mi}
+            limits: {memory: 512Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: cljpass-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cljpass
+spec:
+  selector: {app: cljpass}
+  ports:
+    - port: 8080
+      targetPort: 8080
+# TLS: in Kubernetes via an Ingress (e.g. with cert-manager) to the
+# Service cljpass:8080. With Podman put a reverse proxy (Caddy, nginx)
+# in front - the clients only speak HTTPS.

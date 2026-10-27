@@ -1,0 +1,121 @@
+{:cli/already-connected "This device is already connected to a server."
+ :cli/approval-requested "Approval requested. Fingerprint (tell your admin): {fingerprint}"
+ :cli/approved "Approved: {user}"
+ :cli/connect-again "Then run 'cljpass connect' again or open the desktop app."
+ :cli/connected "Connected to the server. Taken over: {created} new, {updated} changed, {copied} as copy (conflict), {deleted} deleted."
+ :cli/disabled "Disabled: {user} - shared passwords should be changed."
+ :cli/disconnected.one "{n} entry written to {file}. From now on local mode without a server."
+ :cli/disconnected.other "{n} entries written to {file}. From now on local mode without a server."
+ :cli/error "Error: {message}"
+ :cli/exported.one "{n} entry exported to {file}"
+ :cli/exported.other "{n} entries exported to {file}"
+ :cli/exported-unencrypted.one "{n} entry exported to {file} (unencrypted!)"
+ :cli/exported-unencrypted.other "{n} entries exported to {file} (unencrypted!)"
+ :cli/file-not-found "File not found: {file}"
+ :cli/fingerprint-missing "--fingerprint is missing (have the user read it out)"
+ :cli/fingerprint-tell-admin "Fingerprint (tell your admin): {fingerprint}"
+ :cli/group-name-missing "Group name is missing"
+ :cli/group-set "Group {group}: {members}"
+ :cli/identity-exists "An identity already exists on this device ({file})"
+ :cli/identity-imported "Identity imported for {user}"
+ :cli/imported.one "{n} entry imported"
+ :cli/imported.other "{n} entries imported"
+ :cli/kdbx-imported.one "{n} entry imported (database {database})"
+ :cli/kdbx-imported.other "{n} entries imported (database {database})"
+ :cli/local-mode "Local mode with {file}"
+ :cli/missing "{what} is missing"
+ :cli/new-device-or-key "(new device/key!)"
+ :cli/no-requests "No open requests."
+ :cli/org-hash-distribute "Org hash (distribute to all clients via GPO):"
+ :cli/password-or-keyfile-required "Password or --keyfile required"
+ :cli/passwords-mismatch "Passwords do not match"
+ :cli/prompt-file-password "Password of {file}: "
+ :cli/prompt-keepass-password "KeePass password (empty = none): "
+ :cli/prompt-master-password "Master password: "
+ :cli/prompt-master-password-new-file "Master password for the new file: "
+ :cli/prompt-new-keepass-password "New password for the KeePass file: "
+ :cli/prompt-new-master-password "New master password: "
+ :cli/prompt-one-time-code "One-time code: "
+ :cli/prompt-repeat "Repeat: "
+ :cli/recovery-keep-offline "-> Keep it OFFLINE (safe/paper) and delete the file here!"
+ :cli/recovery-written "Recovery key written to {file}"
+ :cli/request-sent "Request sent for {user}"
+ :cli/server-and-org-hash-required "Specify --server and --org-hash"
+ :cli/server-connection-failed "Server connection: {state} {error}"
+ :cli/server-connection-label "Server connection:"
+ :cli/server-listening "cljpass server on {address}"
+ :cli/server-setup-allowed "(setup allowed)"
+ :cli/synced "Synchronized: {added} new, {updated} updated, {deleted} deleted - both files are identical."
+ :cli/transfer-code "One-time code (send separately!): {code}"
+ :cli/transfer-file "Transfer file: {file}"
+ :cli/unknown-format "Unknown format - allowed: {formats}"
+ :cli/usage "cljpass - team password manager with per-entry permissions
+
+Users:
+  cljpass                                  start the desktop app
+  cljpass gui [--idle SECONDS]
+  cljpass enroll --server URL --org-hash H [--user NAME] [--kerberos]
+  cljpass open FILE [--new] [--keyfile K]  local mode with a KeePass file (no server)
+  cljpass connect [--server URL --org-hash H] local file -> server (run again after approval)
+  cljpass disconnect FILE [--keyfile K] [--force]  server -> local file
+  cljpass status | sync | list | fingerprint
+  cljpass export-device --out FILE         identity for a new device (with one-time code)
+  cljpass import-device FILE [--server URL --org-hash H]
+  cljpass kdbx-import FILE [--keyfile K]   take over a KeePass database (lossless)
+  cljpass kdbx-export FILE [--keyfile K]   all readable entries as a KeePass file
+  cljpass kdbx-sync FILE [--keyfile K]     local: synchronize with another KeePass file (like KeePass)
+  cljpass rotate [ID|TITLE ...] [--probe] [--no-probe] [--code 123456]
+                                           change the password at the target, then in the vault (no name: what works here)
+  cljpass agent ...                        access for an LLM session without passwords (cljpass agent help)
+  cljpass import FILE [--format kdbx|xml|csv] [--keyfile K]
+                                             KeePass XML, CSV (KeePassXC, Bitwarden, browsers) or KDBX
+  cljpass export FILE --format xml|csv|html|xsl [--xsl TEMPLATE] [--passwords]
+                                             unencrypted: KeePass XML, CSV, HTML, XSL template
+
+Server:
+  cljpass server --db FILE [--port 8080] [--bind 0.0.0.0] [--init-token T]
+                   [--keytab FILE --realm REALM [--principal HTTP/host@REALM] [--require-kerberos]]
+                   [--trust-proxy]           client address from X-Forwarded-For (behind Caddy etc.)
+
+Administration (with an admin identity):
+  cljpass init --server URL --org NAME --init-token T [--user NAME] --recovery-out FILE
+  cljpass requests                         open approval requests
+  cljpass approve USER --fingerprint FP [--display-name NAME]
+  cljpass disable USER
+  cljpass group NAME [MEMBER ...]          set members (empty = remove all)
+  cljpass ad-sync [--source adsi|FILE.json] [--prefix pw-]
+  cljpass auto-approve [--watch SECONDS] [--ad-sync [--source ..] [--prefix ..]]
+                                             approve requests confirmed by Kerberos (as a service with --watch)
+  cljpass audit [--since SEQ] [--json]     server audit log, checks the hash chain
+  cljpass recover USER --recovery-key FILE --out FILE
+"
+ :cli/vault-created "Vault created. Admin: {user}"
+ :cli/server-kerberos-on "Kerberos enrollment for realm {realm}."
+ :cli/request-kerberos-confirmed "Confirmed with your Windows logon - approval follows automatically."
+ :cli/kerberos-confirmed "Kerberos: {principal}"
+ :cli/auto-approve-skipped-disabled "Not approved automatically (user is disabled): {user}"
+ :cli/auto-approve-skipped-key "Not approved automatically (Kerberos confirmation is for another key): {user}"
+ :cli/ad-sync-changed "AD sync: roster updated"
+ :cli/audit-chain-broken "Audit log: hash chain broken at entry {seq}"
+ :cli/agent-usage "cljpass agent - access for an LLM session (talks to the unlocked UI)
+
+  cljpass agent status
+  cljpass agent find [WORDS] [--history]         entries without secrets (--history: older versions too)
+  cljpass agent show ID|TITLE                    entry without password and protected fields
+  cljpass agent history ID|TITLE                 versions; same password = same password-group
+  cljpass agent set ID|TITLE [--title T] [--username U] [--url URL] [--notes N] [--folder F]
+                     [--tags A;B] [--add-tags A] [--field NAME=VALUE ...] [--remove-field NAME ...]
+  cljpass agent new --title T [...like set] [--generate]
+  cljpass agent generate ID|TITLE [--length N]   new password, Claude does not see it
+  cljpass agent delete ID|TITLE                  into the recycle bin
+  cljpass agent group [PARENT] NAME
+  cljpass agent rotation                         what rotations exist here (the plugins describe themselves)
+  cljpass agent rotate ID|TITLE [--code 123456] [--probe]
+                                                 change the password AT THE TARGET (the human releases it;
+                                                 a code wherever the entry has a TOTP). Claude never sees it.
+  cljpass agent ssh ID|TITLE [--minutes 30]      SSH channel (a human approves), then: ssh -S SOCKET x COMMAND
+  cljpass agent channels | ssh-close NAME
+  cljpass agent secret old|new                   only FOR a running changer (one-time token)
+
+Writing only with \"Tools > Claude may write\". Every change gets the tag \"claude\"." :cli/rotate-none "No entry names a changer this machine knows (field \"{field}\")."
+ :cli/rotate-plugins "Rotation plugins ({file}, directories: {dirs}):"}
