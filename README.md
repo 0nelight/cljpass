@@ -1,3 +1,5 @@
+All of this readme and all of the code was created by LLMs - contact me directly if you have further questions.
+
 # cljpass
 
 A team password manager with **per-entry permissions** like Passbolt, an **offline-capable, file-like architecture** like KeePass and a **desktop UI like KeePass** (native controls via SWT). Written in Clojure and shipped with GraalVM native-image as a single binary (starts in ~10 ms, no Java needed). It works on a plain KeePass file or against an end-to-end encrypted team server, and you can switch between the two at any time. The UI is available in English and German.
